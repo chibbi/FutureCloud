@@ -1,0 +1,28 @@
+{
+  "name": "futurecloud",
+  "version": "1.0.0",
+  "description": "This project is completly nodeJS based file server like nextcloud or SeaFile.   It may not be as secure, but it is based on modern languages and not that rusty old stuff like PHP.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chibbi/FutureCloud.git"
+  },
+  "keywords": [
+    "cloud"
+  ],
+  "author": "chibbi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chibbi/FutureCloud/issues"
+  },
+  "homepage": "https://github.com/chibbi/FutureCloud#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
+}

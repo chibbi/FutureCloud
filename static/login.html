@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Raninninn Network</title>
+    <link rel="stylesheet" href="css/default.css" />
+    <meta name="description" content="Official Website of Raninninn" />
+    <meta name="author" content="chibbi" />
+</head>
+
+<body>
+    <script>
+        function login() {
+            console.log("Setting user to " + document.getElementById("title").value);
+            document.cookie = "user=" + document.getElementById("title").value; 
+            console.log("Setting pw to " + document.getElementById("text").value);
+            document.cookie = "pw=" + document.getElementById("text").value; 
+            location.reload();
+        }
+    </script>
+    <div class="main">
+        <div class="mainContent" id="mainContent">
+            <div style="border: 3px solid rgb(3, 3, 3); margin-top: 30vh; margin-left: 16vw; margin-right: 22vw; padding: 5%; text-align: center;">
+                <form action="javascript:login();" enctype="text/plain">
+                    <p style="text-align: center;">Name:</p><input style="font-size: 18px;" type="text" id="title"
+                        name="title" placeholder="Name" required><br>
+                    <p style="text-align: center;">Password:</p><input style="font-size: 18px;" type="password"
+                        id="text" name="text" placeholder="Password" required><br><br>
+                    <input type="submit">
+                </form>
+            </div>
+        </div ENDOFTHeme>
+    </div>
+</body>
+
+</html>
