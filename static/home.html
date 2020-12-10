@@ -5,22 +5,91 @@
 <head>
     <meta charset="utf-8" />
     <title>Raninninn Network</title>
-    <link rel="stylesheet" href="css/default.css" />
     <meta name="description" content="Official Website of Raninninn" />
     <meta name="author" content="chibbi" />
-    <script data-ad-client="ca-pub-9021480086144976" async
-        src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script src="js/siteLoader.js"></script>
 </head>
 
 <body>
+    <style>
+        #someName {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #someName a {
+            border: 3px solid rgb(3, 3, 3);
+            background-color: #e0d9d9;
+            color: rgb(0, 0, 0);
+            font-size: 25px;
+        }
+
+        #someName a:hover {
+            background-color: #535353;
+            transition-duration: 0.4s;
+        }
+
+        .seds {
+            border: 3px solid rgb(3, 3, 3);
+            margin-top: 10vh;
+            margin-left: 19vw;
+            margin-right: 19vw;
+            padding: 5%;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(";");
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == " ") {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        function httpGet(url, path) {
+            let stuff = "No Response";
+            fetch("http://" + url + path).then(function (response) {
+                response.text().then(function (text) {
+                    stuff = text;
+                    load(JSON.parse(stuff));
+                });
+            });
+        }
+        function load(yourstuff) {
+            var temp = "";
+            // cycles through the objects of "navbar"
+            for (var content in yourstuff) {
+                // adds those objects to the navbar
+                var imptempstuff = JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '').split(".");
+                temp += "<a href='/download" + JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') +
+                    "' download='" + JSON.stringify(yourstuff[content].name).replace('"', '').replace('"', '') + "." +
+                    imptempstuff[imptempstuff.length - 1] +
+                    "'>" + JSON.stringify(yourstuff[content].name) +
+                    "</a>";
+            }
+            document.getElementById("someName").innerHTML = temp;
+        }
+    </script>
     <div class="main">
         <div class="mainContent" id="mainContent">
-            <div style="border: 3px solid rgb(3, 3, 3); margin-top: 30vh; margin-left: 16vw; margin-right: 22vw; padding: 5%; text-align: center;">
+            <div class="seds">
                 <p>YOU ARE LOGGED INNNN</p>
+            </div>
+            <div id="someName" class="seds">
+                <p>Your Files: </p>
             </div>
         </div ENDOFTHeme>
     </div>
+    <script>
+        httpGet(window.location.host, "/api");
+    </script>
 </body>
 
 </html>

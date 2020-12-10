@@ -1,1 +1,4 @@
- 
+{
+    "0":{"name":"test","path":"/test.gif"},
+    "1":{"name":"another","path":"/test.txt"}
+}
