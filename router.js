@@ -7,11 +7,11 @@ module.exports = function (app) {
 
     let sessions = [];
 /*
-TODO: TRY THAT
+TODO: TRY THAT IF still not working
 const multerConfig = {
   storage : multer.diskStorage({
     destination: function (req, file, next) {
-      next(null,"public/images/")
+      next(null, __dirname + "/public/")
     },
     filename: function (req, file, next) {
   
@@ -28,7 +28,7 @@ const multerConfig = {
 */
     let storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, 'public/')
+            cb(null, __dirname + "/public/")
         },
         filename: (req, file, cb) => {
             var loggedin = false;
