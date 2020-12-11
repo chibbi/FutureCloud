@@ -6,7 +6,26 @@ module.exports = function (app) {
     const log = require("./logging")();
 
     let sessions = [];
+/*
+TODO: TRY THAT
+const multerConfig = {
+  storage : multer.diskStorage({
+    destination: function (req, file, next) {
+      next(null,"public/images/")
+    },
+    filename: function (req, file, next) {
+  
+      let imageId = encryption.generateId();
+      let imageNameWithId = imageId.substr(0,10);
+      imagesNames.push({name:imageNameWithId,id:imageId});
+      let fileName = "" + imageNameWithId + "_" + file.originalname;
+  
+      next(null, fileName)
+    }
+  })
+};
 
+*/
     let storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, 'public/')
