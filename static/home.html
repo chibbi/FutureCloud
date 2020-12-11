@@ -11,19 +11,43 @@
 
 <body>
     <style>
-        #someName {
+        #filelistDiv {
             display: flex;
             flex-direction: column;
+            justify-content: space-evenly;
         }
 
-        #someName a {
+        #filelistDiv .fileContainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            flex-wrap: nowrap;
+            border: 3px solid rgb(3, 3, 3);
+            background-color: #e0d9d9;
+            color: rgb(0, 0, 0);
+            margin: 3px;
+        }
+
+        #filelistDiv .deleteButton {
+            width: 10%;
+            float: right;
+        }
+
+        #filelistDiv .downloadButton {
+            width: 80%;
+            float: left;
+        }
+
+        #filelistDiv a {
             border: 3px solid rgb(3, 3, 3);
             background-color: #e0d9d9;
             color: rgb(0, 0, 0);
             font-size: 25px;
+            text-decoration: none;
+            margin: 3px;
         }
 
-        #someName a:hover {
+        #filelistDiv a:hover {
             background-color: #535353;
             transition-duration: 0.4s;
         }
@@ -36,45 +60,101 @@
             padding: 5%;
             text-align: center;
         }
+
+        form {
+            zoom: 1.4;
+        }
+
+        .file {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            height: 2.5rem;
+        }
+
+        .file input {
+            min-width: 14rem;
+        }
+
+        .file-custom {
+            position: absolute;
+            left: 0;
+            z-index: 5;
+            width: 85.5%;
+            height: 2.5rem;
+            padding: .5rem 1rem;
+            line-height: 1.5;
+            color: #555;
+            background-color: #fff;
+            border: .075rem solid #ddd;
+            border-radius: .25rem;
+            box-shadow: inset 0 .2rem .4rem rgba(0, 0, 0, .05);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .file-custom:after {
+            content: "Choose file...";
+        }
+
+        .file-custom:before {
+            position: absolute;
+            right: -.175rem;
+            bottom: -.075rem;
+            z-index: 6;
+            display: block;
+            content: "Browse";
+            height: 2.5rem;
+            padding: .5rem 1rem;
+            line-height: 1.5;
+            color: #555;
+            background-color: #eee;
+            border: .075rem solid #ddd;
+            border-radius: 0 .25rem .25rem 0;
+
+        }
     </style>
     <script>
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(";");
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == " ") {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
+        function sendDelete(filepath) {
+            fetch("http://" + window.location.host + filepath, {
+                method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                body: JSON.stringify("BODY-DATA") // body data type must match "Content-Type" header
+            });
         }
         function httpGet(url, path) {
             let stuff = "No Response";
-            fetch("http://" + url + path).then(function (response) {
+            fetch("http://" + url + path, { method: 'GET' }).then(function (response) {
                 response.text().then(function (text) {
-                    stuff = text;
-                    load(JSON.parse(stuff));
+                    stuff = JSON.parse(text).split(";");
+                    load(JSON.parse(stuff[0]), stuff[1]);
                 });
             });
         }
-        function load(yourstuff) {
+        function load(yourstuff, user) {
             var temp = "";
             // cycles through the objects of "navbar"
             for (var content in yourstuff) {
                 // adds those objects to the navbar
                 var imptempstuff = JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '').split(".");
-                temp += "<a href='/download" + JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') +
+                console.log(imptempstuff);
+                temp += "<div class='fileContainer'><a class='downloadButton' href='/download" + JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') +
                     "' download='" + JSON.stringify(yourstuff[content].name).replace('"', '').replace('"', '') + "." +
-                    imptempstuff[imptempstuff.length - 1] +
-                    "'>" + JSON.stringify(yourstuff[content].name) +
-                    "</a>";
+                    imptempstuff[imptempstuff.length - 1] + "'>" + JSON.stringify(yourstuff[content].name).replace('"', '').replace('"', '') + "</a>";
+                if (yourstuff[content].owner == user) {
+                    temp += "<a class='deleteButton' href='' onclick=\"javascript:sendDelete('/download" +
+                        JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') + "');\">X</a></div>";
+                } else {
+                    temp += "</div>";
+                }
             }
-            document.getElementById("someName").innerHTML = temp;
+            document.getElementById("filelistDiv").innerHTML = temp;
         }
     </script>
     <div class="main">
@@ -82,8 +162,19 @@
             <div class="seds">
                 <p>YOU ARE LOGGED INNNN</p>
             </div>
-            <div id="someName" class="seds">
+            <div id="filelistDiv" class="seds">
                 <p>Your Files: </p>
+            </div>
+            <div id="someName" class="seds">
+                <form action="/download" method="POST" enctype="multipart/form-data">
+                    <input style="width: 94%; height: 30px; font-size: 18px; margin-bottom: 10px;" type="text" id="fileName"
+                        name="fileName" placeholder="Filename" autocomplete="name"><br>
+                    <label style="margin-bottom: 10px;" class="file">
+                        <input type="file" id="fileupload" name="fileupload" aria-label="File-browser">
+                        <span class="file-custom"></span>
+                    </label><br><br>
+                    <input style="width: 97.5%; height: 30px; margin-bottom: 10px;" type="submit">
+                </form>
             </div>
         </div ENDOFTHeme>
     </div>

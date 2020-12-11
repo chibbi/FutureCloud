@@ -1,4 +1,1 @@
-{
-    "0":{"name":"test","path":"/test.gif"},
-    "1":{"name":"another","path":"/test.txt"}
-}
+{"0":{"name":"a great gif","path":"/test.gif","owner":"admin"},"1":{"name":"Nonexistent File","path":"/test.txt","owner":"admin"}}

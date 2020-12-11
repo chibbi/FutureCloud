@@ -1,6 +1,7 @@
-module.exports = function (logging) {
-    var fs = require("fs");
+module.exports = function () {
+    const fs = require("fs");
 
+    const logging = 5;
     // logging = 0 only Errors
     // logging = 1 Errors and Alerts
     // logging = 2 Errors, Alerts and Warnings
@@ -11,11 +12,12 @@ module.exports = function (logging) {
 
     module.log = function (text, logheight) {
         // should change it to switch case 
-        if (logging >= 0 && logheight == 0) {
+        if(logheight == "undefined") {
+            console.log(addTimeStamp() + " NOLOGDEFINED - " + text);
+        } else if (logging >= 0 && logheight == 0) {
             console.log(addTimeStamp() + " ERROR - " + text);
         } else if (logging >= 1 && logheight == 1) {
             console.log(addTimeStamp() + " ALERT - " + text);
-            sendAlertMail();
         } else if (logging >= 2 && logheight == 2) {
             console.log(addTimeStamp() + "  WARN - " + text);
         } else if (logging >= 3 && logheight == 3) {
@@ -29,7 +31,9 @@ module.exports = function (logging) {
 
     module.printlog = function (text, logheight) {
         // should change it to switch case 
-        if (logging >= 0 && logheight == 0) {
+        if(logheight == "undefined") {
+            console.log(addTimeStamp() + " NOLOGDEFINED - " + text);
+        } else if (logging >= 0 && logheight == 0) {
             printevent(addTimeStamp() + " ERROR - " + text);
         } else if (logging >= 1 && logheight == 1) {
             printevent(addTimeStamp() + " ALERT - " + text);
