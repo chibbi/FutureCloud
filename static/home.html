@@ -24,7 +24,7 @@
                 body: JSON.stringify("BODY-DATA") // body data type must match "Content-Type" header
             });
         }
-        function sendPut(filepath, users) {
+        function sendPut(filepath, gbody) {
             fetch("http://" + window.location.host + filepath, {
                 method: 'PUT', // *GET, POST, PUT, DELETE, etc.
                 headers: {
@@ -32,8 +32,12 @@
                     // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 redirect: 'follow', // manual, *follow, error
-                body: JSON.stringify(users) // body data type must match "Content-Type" header
+                body: JSON.stringify(gbody) // body data type must match "Content-Type" header
             });
+        }
+        function rename() {
+            // TODO: CREATE POPUP Containing existing name
+            // TODO: put request that changes the Name
         }
         function getShares(path) {
             let stuff = "No Response";
@@ -70,8 +74,8 @@
                     "' download='" + JSON.stringify(yourstuff[content].name).replace('"', '').replace('"', '') + "." +
                     imptempstuff[imptempstuff.length - 1] + "'>" + JSON.stringify(yourstuff[content].name).replace('"', '').replace('"', '') + "</a>";
                 if (user == yourstuff[content].owner) {
-                    temp += "<a class='addShareButton' href='' onclick=\"javascript:getShares('/download" +
-                        JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') + "');\">add</a>";
+                    temp += "<a class='addShareButton' href='' onclick=\"javascript:rename('/download" +
+                        JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') + "');\">rename</a>";
                 }
                 temp += "<a class='deleteButton' href='' onclick=\"javascript:sendDelete('/download" +
                     JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') + "');\">X</a></div>";
