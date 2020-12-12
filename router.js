@@ -39,7 +39,6 @@ module.exports = function (app) {
                     fileArt = fileArt[fileArt.length - 1];
                     var fileCustomName = createFileName() + "." + fileArt;
                     var path = __dirname + "/public/" + fileCustomName;
-                    console.log(req.body);
                     if (req.body.fileName != undefined && req.body.fileName != "") {
                         var newFile = { "name": req.body.fileName, "path": "/" + fileCustomName, "owner": user };
                     } else {
@@ -130,8 +129,8 @@ module.exports = function (app) {
                 res.json(usersDb);
             } else {
                 fs.writeFileSync(__dirname + "/userDB/" + user + ".json", Buffer.from('{' +
-                    '"0":{"name":"a great gif","path":"/test.gif","owner":"' + user + '"},' +
-                    '"1":{"name":"Nonexistent File","path":"/test.txt","owner":"' + user + '"}}', "utf8"));
+                    '"0":{"name":"a great gif","path":"/test.gif","owner":"admin","share":"' + user + '"},' +
+                    '"1":{"name":"Nonexistent File","path":"/test.txt","owner":"admin","share":"' + user + '"}}', "utf8"));
                 var usersDb = fs.readFileSync(__dirname + "/userDB/" + user + ".json") + ";" + user;
                 res.json(usersDb);
             }
@@ -142,6 +141,12 @@ module.exports = function (app) {
 
     app.get("/favicon.ico", (req, res) => {
         res.sendFile(__dirname + "/static/pictures/schoki-logo.png");
+    });
+    app.get("/js/default.js", (req, res) => {
+        res.sendFile(__dirname + "/static/js/default.js");
+    });
+    app.get("/css/default.css", (req, res) => {
+        res.sendFile(__dirname + "/static/css/default.css");
     });
 
     app.post('/download', upload.single("fileupload"), function (req, res) {
@@ -162,13 +167,6 @@ module.exports = function (app) {
 
         }
         var [loggedin, user] = isLoggedIn(req.cookies.session);
-        var usersJson = JSON.parse(fs.readFileSync(__dirname + "/userDB/" + user + ".json", "utf8"));
-        for (var i = 0; i < Object.keys(usersJson).length; i++) {
-            var element = usersJson[i];
-            if (req.params.file == element.path.replace("/", "")) {
-                loggedin = true;
-            }
-        }
         if (loggedin) {
             console.log(__dirname + "/public/" + req.params.file);
             if (!fs.existsSync(__dirname + "/public/" + req.params.file)) {
@@ -182,28 +180,62 @@ module.exports = function (app) {
         }
     })
 
-    app.delete('/download/:file', function (req, res) {
-        console.log("DELETE REQUESSTT");
+    app.put('/download/:file', function (req, res) {
         if (req.cookies.session == undefined) {
             res.redirect("/login");
         }
         var [loggedin, user] = isLoggedIn(req.cookies.session);
+        var owns = false;
         var usersJson = JSON.parse(fs.readFileSync(__dirname + "/userDB/" + user + ".json", "utf8"));
         for (var i = 0; i < Object.keys(usersJson).length; i++) {
             var element = usersJson[i];
-            if (req.params.file == element.path.replace("/", "")) {
-                loggedin = true;
+            if (user == element.owner) {
+                owns = true;
             }
         }
         if (loggedin) {
             if (!fs.existsSync(__dirname + "/public/" + req.params.file)) {
-                delFile("/" + req.params.file,user);
-                log.log(user + " deleted nonexistent /public/" + req.params.file ,1);
+                delFile("/" + req.params.file, user);
+                log.log(user + " deleted nonexistent /public/" + req.params.file, 1);
                 res.redirect("/home");
             } else {
-                fs.rmSync(__dirname + "/public/" + req.params.file);
-                delFile("/" + req.params.file,user);
-                log.log(user + " deleted /public/" + req.params.file ,3);
+                if (owns) {
+                    console.log(req.body.others);
+                    log.log(user + " shared /public/" + req.params.file + " with " + req.body.others, 3);
+                }
+                res.redirect("/home");
+            }
+        } else {
+            res.redirect("/login");
+        }
+    })
+
+    app.delete('/download/:file', function (req, res) {
+        if (req.cookies.session == undefined) {
+            res.redirect("/login");
+        }
+        var [loggedin, user] = isLoggedIn(req.cookies.session);
+        var owns = false;
+        var usersJson = JSON.parse(fs.readFileSync(__dirname + "/userDB/" + user + ".json", "utf8"));
+        for (var i = 0; i < Object.keys(usersJson).length; i++) {
+            var element = usersJson[i];
+            if (user == element.owner) {
+                owns = true;
+            }
+        }
+        if (loggedin) {
+            if (!fs.existsSync(__dirname + "/public/" + req.params.file)) {
+                delFile("/" + req.params.file, user);
+                log.log(user + " deleted nonexistent /public/" + req.params.file, 1);
+                res.redirect("/home");
+            } else {
+                if (owns) {
+                    fs.rm(__dirname + "/public/" + req.params.file, (err) => {
+                        if (err) throw err;
+                    });
+                }
+                delFile("/" + req.params.file, user);
+                log.log(user + " deleted /public/" + req.params.file, 3);
                 res.redirect("/home");
             }
         } else {
@@ -242,16 +274,16 @@ module.exports = function (app) {
     }
 
     /* STORAGE */
-    function delFile(file,user) {
+    function delFile(file, user) {
         var usersJson = JSON.parse(fs.readFileSync(__dirname + "/userDB/" + user + ".json", "utf8"));
         console.log(usersJson);
         for (const [key, value] of Object.entries(usersJson)) {
-            if(value.path == file) {
+            if (value.path == file) {
                 console.log("PPPPP " + usersJson[key]);
                 delete usersJson[key];
                 console.log(usersJson);
             }
-          }
+        }
         fs.writeFileSync(__dirname + "/userDB/" + user + ".json", Buffer.from(JSON.stringify(usersJson), "utf8"));
     }
     function createFileName() {

@@ -7,115 +7,11 @@
     <title>Raninninn Network</title>
     <meta name="description" content="Official Website of Raninninn" />
     <meta name="author" content="chibbi" />
+    <link rel="stylesheet" href="css/default.css">
+    <script src="js/default.js"></script>
 </head>
 
 <body>
-    <style>
-        #filelistDiv {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-        }
-
-        #filelistDiv .fileContainer {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            flex-wrap: nowrap;
-            border: 3px solid rgb(3, 3, 3);
-            background-color: #e0d9d9;
-            color: rgb(0, 0, 0);
-            margin: 3px;
-        }
-
-        #filelistDiv .deleteButton {
-            width: 10%;
-            float: right;
-        }
-
-        #filelistDiv .downloadButton {
-            width: 80%;
-            float: left;
-        }
-
-        #filelistDiv a {
-            border: 3px solid rgb(3, 3, 3);
-            background-color: #e0d9d9;
-            color: rgb(0, 0, 0);
-            font-size: 25px;
-            text-decoration: none;
-            margin: 3px;
-        }
-
-        #filelistDiv a:hover {
-            background-color: #535353;
-            transition-duration: 0.4s;
-        }
-
-        .seds {
-            border: 3px solid rgb(3, 3, 3);
-            margin-top: 10vh;
-            margin-left: 19vw;
-            margin-right: 19vw;
-            padding: 5%;
-            text-align: center;
-        }
-
-        form {
-            zoom: 1.4;
-        }
-
-        .file {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            height: 2.5rem;
-        }
-
-        .file input {
-            min-width: 14rem;
-        }
-
-        .file-custom {
-            position: absolute;
-            left: 0;
-            z-index: 5;
-            width: 85.5%;
-            height: 2.5rem;
-            padding: .5rem 1rem;
-            line-height: 1.5;
-            color: #555;
-            background-color: #fff;
-            border: .075rem solid #ddd;
-            border-radius: .25rem;
-            box-shadow: inset 0 .2rem .4rem rgba(0, 0, 0, .05);
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .file-custom:after {
-            content: "Choose file...";
-        }
-
-        .file-custom:before {
-            position: absolute;
-            right: -.175rem;
-            bottom: -.075rem;
-            z-index: 6;
-            display: block;
-            content: "Browse";
-            height: 2.5rem;
-            padding: .5rem 1rem;
-            line-height: 1.5;
-            color: #555;
-            background-color: #eee;
-            border: .075rem solid #ddd;
-            border-radius: 0 .25rem .25rem 0;
-
-        }
-    </style>
     <script>
         function sendDelete(filepath) {
             fetch("http://" + window.location.host + filepath, {
@@ -128,9 +24,36 @@
                 body: JSON.stringify("BODY-DATA") // body data type must match "Content-Type" header
             });
         }
-        function httpGet(url, path) {
+        function sendPut(filepath, users) {
+            fetch("http://" + window.location.host + filepath, {
+                method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                body: JSON.stringify(users) // body data type must match "Content-Type" header
+            });
+        }
+        function getShares(path) {
             let stuff = "No Response";
-            fetch("http://" + url + path, { method: 'GET' }).then(function (response) {
+            fetch("http://" + window.location.host + path, {
+                method: 'GET', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+            }).then(function (response) {
+                response.text().then(function (text) {
+                    console.log(text);
+                });
+            });
+            document.getElementById("shares").style.visibility = "visible";
+        }
+        function httpGet(path) {
+            let stuff = "No Response";
+            fetch("http://" + window.location.host + path, { method: 'GET' }).then(function (response) {
                 response.text().then(function (text) {
                     stuff = JSON.parse(text).split(";");
                     load(JSON.parse(stuff[0]), stuff[1]);
@@ -143,16 +66,15 @@
             for (var content in yourstuff) {
                 // adds those objects to the navbar
                 var imptempstuff = JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '').split(".");
-                console.log(imptempstuff);
                 temp += "<div class='fileContainer'><a class='downloadButton' href='/download" + JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') +
                     "' download='" + JSON.stringify(yourstuff[content].name).replace('"', '').replace('"', '') + "." +
                     imptempstuff[imptempstuff.length - 1] + "'>" + JSON.stringify(yourstuff[content].name).replace('"', '').replace('"', '') + "</a>";
-                if (yourstuff[content].owner == user) {
-                    temp += "<a class='deleteButton' href='' onclick=\"javascript:sendDelete('/download" +
-                        JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') + "');\">X</a></div>";
-                } else {
-                    temp += "</div>";
+                if (user == yourstuff[content].owner) {
+                    temp += "<a class='addShareButton' href='' onclick=\"javascript:getShares('/download" +
+                        JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') + "');\">add</a>";
                 }
+                temp += "<a class='deleteButton' href='' onclick=\"javascript:sendDelete('/download" +
+                    JSON.stringify(yourstuff[content].path).replace('"', '').replace('"', '') + "');\">X</a></div>";
             }
             document.getElementById("filelistDiv").innerHTML = temp;
         }
@@ -162,10 +84,13 @@
             <div id="filelistDiv" class="seds">
                 <p>Your Files: </p>
             </div>
+            <div id="shares" style="visibility: hidden;z-index: 10;">
+                <p>Your Files: </p>
+            </div>
             <div id="someName" class="seds">
                 <form action="/download" method="POST" enctype="multipart/form-data">
-                    <input style="width: 94%; height: 30px; font-size: 18px; margin-bottom: 10px;" type="text" id="fileName"
-                        name="fileName" placeholder="Filename" autocomplete="name"><br>
+                    <input style="width: 94%; height: 30px; font-size: 18px; margin-bottom: 10px;" type="text"
+                        id="fileName" name="fileName" placeholder="Filename" autocomplete="name"><br>
                     <label style="margin-bottom: 10px;" class="file">
                         <input type="file" id="fileupload" name="fileupload" aria-label="File-browser">
                         <span class="file-custom"></span>
@@ -176,7 +101,8 @@
         </div ENDOFTHeme>
     </div>
     <script>
-        httpGet(window.location.host, "/api");
+        consentCookies();
+        httpGet("/api");
     </script>
 </body>
 
