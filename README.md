@@ -7,6 +7,7 @@ It may not be as secure, but it is based on modern languages and not that rusty 
 ### **It is still in a development phase so don't expect everything to work**  
   
   ## TODO:
+  - [ ] Rename Option
   - [ ] Folders for the Userinterface
   - [ ] Enable the "filesharing" option
   - [ ] Smoother Interface
