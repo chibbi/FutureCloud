@@ -42,7 +42,7 @@ module.exports = function (app) {
         if (user == undefined || userpw == undefined) {
             res.sendFile(__dirname + "/static/login.html");
         } else {
-            // TODO: hash those password
+            // TODO: hash those password :: https://www.toptal.com/nodejs/secure-rest-api-in-nodejs
             var usersJsonFile = JSON.parse(fs.readFileSync(__dirname + "/userDB/users.json", "utf8"));
             for (var i = 0; i < Object.keys(usersJsonFile).length; i++) {
                 var element = usersJsonFile[i];
