@@ -7,7 +7,7 @@ It may not be as secure, but it is based on modern languages and not that rusty 
 ### **It is still in a development phase so don't expect everything to work**  
   
   ## TODO:
-  - [ ] Revisit some older functions that can be improved (like the deletion of Files (use splice?))
+  - [ ] Revisit some older functions that can be improved (like the deletion of Files (use splice?)) => find out if splice is actually more performant (likely but not sure)
   - [ ] Rename Option
   - [ ] Folders for the Userinterface
   - [ ] Enable the "filesharing" option
