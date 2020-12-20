@@ -7,7 +7,8 @@ It may not be as secure, but it is based on modern languages and not that rusty 
 ### **It is still in a development phase so don't expect everything to work**  
   
   ## TODO:
-  - [ ] Rename Option => PATCH 
+  - [ ] Revisit some older functions that can be improved (like the deletion of Files (use splice?))
+  - [ ] Rename Option
   - [ ] Folders for the Userinterface
   - [ ] Enable the "filesharing" option
   - [ ] Smoother Interface
