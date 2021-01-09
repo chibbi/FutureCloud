@@ -7,12 +7,13 @@ It may not be as secure, but it is based on modern languages and not that rusty 
 ### **It is still in a development phase so don't expect everything to work**  
   
   ## TODO:
-  - [ ] Revisit some older functions that can be improved (like the deletion of Files (use splice?)) => find out if splice is actually more performant (likely but not sure)
   - [ ] option to encrypt the Files
+  - [ ] Hash Passwords
   - [ ] Rename Option
   - [ ] Folders for the Userinterface
   - [ ] Enable the "filesharing" option
   - [ ] Smoother Interface
-  - [ ] Hash Passwords
+  - [ ] Revisit some older functions that can be improved (like the deletion of Files (use splice?)) => find out if splice is actually more performant (likely but not sure)
   - [ ] Maybe add Register ?
   - [ ] Switch to a real DB for better performance
+  
