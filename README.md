@@ -8,6 +8,7 @@ It may not be as secure, but it is based on modern languages and not that rusty 
   
   ## TODO:
   - [ ] Revisit some older functions that can be improved (like the deletion of Files (use splice?)) => find out if splice is actually more performant (likely but not sure)
+  - [ ] option to encrypt the Files
   - [ ] Rename Option
   - [ ] Folders for the Userinterface
   - [ ] Enable the "filesharing" option
