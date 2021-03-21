@@ -1,4 +1,4 @@
-# FutureCloud
+# FutureCloud [![](https://tokei.rs/b1/github/chibbi/FutureCCloud)](https://tokei.rs/b1/github/chibbi/FutureCloud)
 This project is a completly nodeJS based file server like nextcloud or SeaFile.  
 It may not be as secure as the proven Applications which were created by experienced Developers, but it is based on modern languages and not that rusty old stuff like PHP.  
   
