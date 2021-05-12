@@ -44,17 +44,25 @@ module.exports = function () {
         fs.writeFileSync(__dirname + "/userDB/" + user + ".json", Buffer.from(JSON.stringify(usersJson), "utf8"));
     }
 
-    module.createSession = function (user) {
+    module.createSession = function(user) {
         var exists = true;
+        var millsec = Date.now();
         var num;
         while (exists) {
             num = Math.floor(Math.random() * 1E18);
             for (var i = 0; i < sessions.length; i++) {
                 if (num == sessions[i].num) {
                     exists = true;
+                } // 1800000 == 30Minutes
+                if (sessions[i].millsec >= 1800000) {
+                    sessions.splice(i, 1);
                 }
             }
-            sessions.push({ num, user });
+            sessions.push({
+                num,
+                user,
+                millsec
+            });
             break;
         }
         return num;
