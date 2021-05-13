@@ -4,8 +4,6 @@ It may not be as secure as the proven Applications which were created by experie
   
 ![This is an absolute win](https://media1.tenor.com/images/c4bb9246ba107ea847f4bb66b6e0a99c/tenor.gif?itemid=15135962)
   
-### redoing stuff
-  
   ## TODO:
   - [ ] option to encrypt the Files
   - [ ] Hash Passwords
