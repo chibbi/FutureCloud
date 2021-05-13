@@ -1,4 +1,7 @@
 node_modules/
 userDB/
 public/
+node_modules/*
+userDB/*
+public/*
 temp*
