@@ -93,6 +93,7 @@ module.exports = function (app) {
         }
     })
 
+    // TODO: should be changed to /upload and some input sanitizing, also on clientside
     app.post('/download', upload.single("fileupload"), function (req, res) {
         if (req.cookies.session == undefined) {
             res.redirect("/login");
@@ -125,6 +126,10 @@ module.exports = function (app) {
     })
 
     // TODO: Make this stuff here work
+    // i am not testing this project right now so i have to assume all of this is not working
+    // if its not working it should not be running
+    // thats why its commented out now
+    /*
     app.put('/download/:file', function (req, res) {
         if (req.cookies.session == undefined) {
             res.redirect("/login");
@@ -187,5 +192,6 @@ module.exports = function (app) {
             res.redirect("/login");
         }
     })
+    */
     return module;
 }
