@@ -1,19 +1,19 @@
 # FutureCloud [![](https://tokei.rs/b1/github/chibbi/FutureCloud)](https://tokei.rs/b1/github/chibbi/FutureCloud)
-This project is a completly nodeJS based file server like nextcloud or SeaFile.  
-It may not be as secure as the proven Applications which were created by experienced Developers, but it is based on modern languages and not that rusty old stuff like PHP.  
-  
-![This is an absolute win](https://media1.tenor.com/images/c4bb9246ba107ea847f4bb66b6e0a99c/tenor.gif?itemid=15135962)
-  
+This project is a file server like nextcloud or SeaFile and is built in Javascript.  
+It originated in my desire for a simple yet capable file server, which can act as an internal NAS and external file sharing service.  
+File sharing is not a dedicated feature yet, but you can create accounts solely meant for public file sharing. That way everything is still password protected.  
+Development on this project has somewhat come to a standstill, as i personally (and with that it's sole user) have not used it that much any more and other projects got more interesting. I may pick this Project back up, but that is unlikely. If i do, i will unarchive the repository.  
   ## TODO:
-  - [ ] option to encrypt the Files
+  - [ ] Automated testing
   - [ ] Hash Passwords
+  - [ ] Option to encrypt the Files
   - [ ] Rename Option
   - [ ] Folders for the Userinterface
   - [ ] Enable the "filesharing" option
   - [ ] Smoother Interface
-  - [ ] Revisit some older functions that can be improved (like the deletion of Files (use splice?)) => find out if splice is actually more performant (likely but not sure)
-  - [ ] Maybe add Register ?
+  - [ ] Revisit some older functions that can be improved
   - [ ] Switch to a real DB for better performance
-   
+  - [ ] Rewrite the code in typescript and switch to [deno](https://deno.land/)
+  - [ ] Add the possibility for automated registering
   
-##### Also i will rewrite this in typescript for [deno](https://deno.land/) at some point (that's the plan at least)
+TODO is in chronogical Order.
