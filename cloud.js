@@ -82,6 +82,8 @@ module.exports = function () {
         return [false, ""];
     }
 
+    // TODO: this Function is weird, and should probably just be completly redone
+    // i am not even sure any more that it works as it should
     function createFileName() {
         var exists = true;
         var num;
