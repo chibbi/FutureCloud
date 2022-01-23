@@ -51,7 +51,7 @@ module.exports = function () {
         while (exists) {
             num = Math.floor(Math.random() * 1E18);
             for (var i = 0; i < sessions.length; i++) {
-                if (num == sessions[i].num) {
+                if (num == sessions[i].num) { // maybe change that to .includes()
                     exists = true;
                 } // 1800000 == 30Minutes
                 if (sessions[i].millsec >= 1800000) {
@@ -95,7 +95,7 @@ module.exports = function () {
         while (exists) {
             num = Math.floor(Math.random() * 1000000000000000000);
             for (var i = 0; i < allexisting.length; i++) {
-                if (num == allexisting[i].num) {
+                if (num == allexisting[i].num) { // maybe change that to .includes()
                     exists = true;
                 } else { exists = false }
             }
